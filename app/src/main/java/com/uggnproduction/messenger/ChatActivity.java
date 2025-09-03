@@ -3,10 +3,8 @@ package com.uggnproduction.messenger;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -14,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<Message> messageList;
 
     // Заголовок Toolbar
-    private ImageView imgAvatar;
+    private ShapeableImageView imgAvatar;
     private TextView tvName, tvStatus;
 
     @Override
@@ -55,24 +56,32 @@ public class ChatActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setTitle(""); // мы используем кастомный заголовок
+                getSupportActionBar().setTitle(""); // используем кастомный заголовок
             }
 
             toolbar.setNavigationOnClickListener(v -> finish());
 
             // Кастомные view внутри Toolbar
-            imgAvatar = toolbar.findViewById(R.id.img_avatar);
-            tvName = toolbar.findViewById(R.id.tv_name);
-            tvStatus = toolbar.findViewById(R.id.tv_username);
+            imgAvatar = toolbar.findViewById(R.id.img_avatar_small);
+            tvName = toolbar.findViewById(R.id.tv_title);
+            tvStatus = toolbar.findViewById(R.id.tv_subtitle);
 
             Log.d(TAG, "Toolbar views: imgAvatar=" + imgAvatar + ", tvName=" + tvName + ", tvStatus=" + tvStatus);
 
             if (tvName != null) tvName.setText(chatName != null ? chatName : "Имя контакта");
-            if (tvStatus != null) tvStatus.setText("Онлайн"); // заглушка
+            if (tvStatus != null) tvStatus.setText("в сети"); // заглушка
             if (imgAvatar != null) {
-                imgAvatar.setOnClickListener(v ->
-                        Log.d(TAG, "Нажат аватар")
-                );
+                if (chatAvatarUrl != null && !chatAvatarUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(chatAvatarUrl)
+                            .placeholder(R.drawable.ic_avatar_placeholder)
+                            .error(R.drawable.ic_avatar_placeholder)
+                            .circleCrop()
+                            .into(imgAvatar);
+                } else {
+                    imgAvatar.setImageResource(R.drawable.ic_avatar_placeholder);
+                }
+                imgAvatar.setOnClickListener(v -> Log.d(TAG, "Нажат аватар"));
             }
         }
 
@@ -83,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
             messageList = new ArrayList<>();
             messageAdapter = new MessageAdapter(messageList);
             rvMessages.setAdapter(messageAdapter);
+            Log.d(TAG, "RecyclerView инициализирован");
         } else {
             Log.e(TAG, "RecyclerView не найден!");
         }
@@ -116,5 +126,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // Очищаем поле ввода
         etMessage.setText("");
+
+        Log.d(TAG, "Отправлено сообщение: " + text);
     }
 }
