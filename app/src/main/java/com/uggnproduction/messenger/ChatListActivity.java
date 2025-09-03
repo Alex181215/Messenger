@@ -84,6 +84,8 @@ public class ChatListActivity extends AppCompatActivity {
                 showToast("Открыть профиль")
         );
 
+        Toast.makeText(this, "Загрузка чатов", Toast.LENGTH_SHORT).show();
+
         // ---- Обработка кликов по пунктам меню ----
         navView.setNavigationItemSelectedListener(item -> {
             String message;
