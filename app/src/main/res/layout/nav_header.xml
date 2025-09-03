@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_header_root"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:fitsSystemWindows="true">
+
+    <!-- Аватар -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_avatar"
+        app:srcCompat="@drawable/ic_avatar_placeholder"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/profile_avatar"
+        android:scaleType="centerCrop"
+        android:background="?attr/colorSurface"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+    tools:src="@drawable/ic_avatar_placeholder" />
+
+    <!-- Кнопка QR в углу аватарки -->
+    <ImageButton
+        android:id="@+id/btn_qr"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/qr_code"
+        android:padding="4dp"
+        app:srcCompat="@drawable/ic_qr_code"
+        app:layout_constraintEnd_toEndOf="@id/img_avatar"
+        app:layout_constraintTop_toTopOf="@id/img_avatar" />
+
+    <!-- Имя пользователя -->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="?attr/colorOnPrimary"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@id/img_avatar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+        android:text="Имя пользователя"
+    tools:text="Имя пользователя" />
+
+    <!-- Username / телефон -->
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="?attr/colorOnPrimary"
+    android:textSize="14sp"
+    app:layout_constraintTop_toBottomOf="@id/tv_name"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:text="username@example.com" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

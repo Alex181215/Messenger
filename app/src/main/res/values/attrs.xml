@@ -1,0 +1,4 @@
+<resources>
+    <attr name="badgeTextColor" format="color"/>
+    <attr name="badgeBgColor" format="color"/>
+</resources>

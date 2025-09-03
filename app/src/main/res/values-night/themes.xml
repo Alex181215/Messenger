@@ -1,0 +1,40 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Основные цвета -->
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryVariant">#424242</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <!-- Второстепенные цвета -->
+        <item name="colorSecondary">#03DAC5</item>
+        <item name="colorSecondaryVariant">#03DAC5</item>
+        <item name="colorOnSecondary">#000000</item>
+
+        <!-- Фон -->
+        <item name="android:background">#212121</item>
+        <item name="colorSurface">#424242</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="colorSurfaceVariant">#333333</item>
+        <item name="colorOnSurfaceVariant">#BDBDBD</item>
+        <item name="colorOutline">#757575</item>
+
+        <!-- Бейджи -->
+        <item name="badgeBgColor">#D32F2F</item>
+        <item name="badgeTextColor">#FFFFFF</item>
+
+        <!-- Статусбар и навбар -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        
+        <!-- Прозрачность и поведение -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        
+        <!-- Иконки -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+    </style>
+</resources>

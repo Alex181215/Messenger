@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Messenger</string>
+    <string name="title_activity_chat_list">activity_chat_list</string>
+    <string name="new_chat">Новый чат</string>
+    <string name="message">Сообщение</string>
+    <string name="send_message">Следующее сообщение</string>
+    <string name="attach_file">Прикрепить</string>
+    <string name="chat_avatar">Аватар</string>
+    <string name="profile_avatar">Профиль</string>
+    <string name="qr_code">QR-код</string>
+    <string name="navigation_drawer_open">Открыто</string>
+    <string name="navigation_drawer_close">Закрыто</string>
+</resources>
