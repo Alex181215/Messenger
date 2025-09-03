@@ -223,4 +223,5 @@ public class ChatActivity extends AppCompatActivity {
         int offsetPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
         layoutManager.scrollToPositionWithOffset(lastIndex, composer.getHeight() + offsetPx);
     }
+
 }
