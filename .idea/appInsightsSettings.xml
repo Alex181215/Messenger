@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.uggnproduction.messenger" />
+                  <option name="mobileSdkAppId" value="1:683887576572:android:f6a786eff4c2fe3c021e79" />
+                  <option name="projectId" value="messenger-c96de" />
+                  <option name="projectNumber" value="683887576572" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

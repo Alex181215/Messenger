@@ -74,10 +74,10 @@
         android:clipToPadding="false"
         android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@id/appbar"
-        app:layout_constraintBottom_toTopOf="@id/composer"
         android:layout_gravity="fill"
+        android:layout_marginBottom="56dp"
         tools:listitem="@layout/item_message_incoming" />
+
 
     <!-- Панель ввода сообщения -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,8 +104,7 @@
         <!-- Поле ввода -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_message"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/message"
             app:boxBackgroundMode="filled"

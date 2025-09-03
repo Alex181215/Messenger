@@ -1,5 +1,6 @@
 package com.uggnproduction.messenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -113,10 +114,15 @@ public class ChatListActivity extends AppCompatActivity {
         rvChats.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new ChatAdapter(this, chatList, chat -> {
             Log.d(TAG, "Чат кликнут: " + chat.getName());
-            showToast("Открыл чат: " + chat.getName());
+            // Запуск ChatActivity
+            Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
+            intent.putExtra("chatId", chat.getId());
+            intent.putExtra("chatName", chat.getName());
+            intent.putExtra("chatAvatar", chat.getAvatarUrl());
+            startActivity(intent);
         });
         rvChats.setAdapter(chatAdapter);
-        Log.d(TAG, "Adapter установлен");
+
     }
 
     @Override
