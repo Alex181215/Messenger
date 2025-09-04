@@ -25,6 +25,8 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -203,15 +205,44 @@ public class ChatActivity extends AppCompatActivity {
         String text = etMessage.getText().toString().trim();
         if (text.isEmpty()) return;
 
+        // Моё сообщение
         Message newMessage = new Message(text, true, System.currentTimeMillis());
         messageList.add(newMessage);
         messageAdapter.notifyItemInserted(messageList.size() - 1);
 
         etMessage.setText("");
         etMessage.post(this::adjustEditTextHeightAndScrolling);
-
         rvMessages.post(() -> scrollToBottom(false));
+
+        // Ответ-бот
+        rvMessages.postDelayed(() -> {
+            String[] replies = {
+                    "Привет 👋",
+                    "Как дела? \uD83E\uDD28",
+                    "Хорошо, спасибо! \uD83D\uDE1C",
+                    "Интересно 🤔",
+                    "Да, согласен 👍",
+                    "Сейчас занят, отпишусь позже \uD83E\uDD78",
+                    "Ха-ха 😅",
+                    "Ага! \uD83E\uDEE1",
+                    "Расскажи подробнее \uD83E\uDD13",
+                    "Окей! \uD83E\uDD1C",
+                    "Ладно, я реально не могу сейчас \uD83E\uDD72",
+                    "И один в поле воин \uD83D\uDE0E",
+                    "Заболел \uD83E\uDD7A",
+                    "Может быть \uD83E\uDD2A"
+            };
+
+            Random random = new Random();
+            String replyText = replies[random.nextInt(replies.length)];
+
+            Message reply = new Message(replyText, false, System.currentTimeMillis());
+            messageList.add(reply);
+            messageAdapter.notifyItemInserted(messageList.size() - 1);
+            rvMessages.post(() -> scrollToBottom(false));
+        }, 1000); // задержка 1 сек
     }
+
 
     private void scrollToBottom() {
         scrollToBottom(false);

@@ -27,15 +27,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:enforceNavigationBarContrast">false</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+
         <!-- Прозрачность и поведение -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         
         <!-- Иконки -->
         <item name="android:windowLightStatusBar">true</item> <!-- тёмные иконки на светлом фоне -->
-        <item name="android:windowLightNavigationBar">true</item> <!-- тёмные кнопки навигации -->
 
     </style>
 </resources>
