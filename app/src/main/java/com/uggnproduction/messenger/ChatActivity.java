@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
@@ -26,7 +25,6 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -50,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -80,33 +79,33 @@ public class ChatActivity extends AppCompatActivity {
             imgAvatar.setImageResource(R.drawable.ic_avatar_placeholder);
         }
 
+        // RecyclerView и Composer
         rvMessages = findViewById(R.id.rv_messages);
         composer = findViewById(R.id.composer);
         etMessage = findViewById(R.id.et_message);
         btnSend = findViewById(R.id.btn_send);
 
-        // RecyclerView
+        // Настройка LayoutManager
         layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true); // все сообщения выравниваем по низу
-        layoutManager.setReverseLayout(false);
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setSmoothScrollbarEnabled(true);
         rvMessages.setLayoutManager(layoutManager);
         rvMessages.setClipToPadding(false);
 
-        rvMessages.setLayoutManager(layoutManager);
-        rvMessages.setClipToPadding(false);
-
+        // Данные и адаптер
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList);
         rvMessages.setAdapter(messageAdapter);
 
-        // EditText
+        // Настройка EditText
         etMessage.setHorizontallyScrolling(false);
         etMessage.setMaxLines(12);
         etMessage.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override public void afterTextChanged(Editable s) {
-                etMessage.post(ChatActivity.this::adjustEditTextHeightAndScrolling);
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                etMessage.post(ChatActivity.this::adjustEditTextHeight);
             }
         });
 
@@ -121,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
 
         btnSend.setOnClickListener(v -> sendMessage());
 
-        // Обновляем padding RecyclerView и скроллим к последнему сообщению
+        // Обновляем padding RecyclerView и скроллим к последнему сообщению только при изменении высоты composer
         composer.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             int h = composer.getHeight();
             if (h != lastComposerHeight) {
@@ -131,53 +130,38 @@ public class ChatActivity extends AppCompatActivity {
                         rvMessages.getPaddingTop(),
                         rvMessages.getPaddingRight(),
                         h + offsetPx);
-                scrollToBottom(false);
+                rvMessages.post(() -> scrollToBottom(false));
             }
         });
 
-        // При старте скроллим к последнему сообщению
-        rvMessages.post(this::scrollToBottom);
+        // Скролл к последнему сообщению при старте
+        rvMessages.post(() -> scrollToBottom(false));
 
-        // В onCreate() после инициализации rvMessages и composer
+        // Обработка клавиатуры
         final View rootView = findViewById(R.id.coordinator);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            // Получаем координаты и размеры окна
+            int screenHeight = rootView.getRootView().getHeight();
             int[] location = new int[2];
             rootView.getLocationOnScreen(location);
-            int screenHeight = rootView.getRootView().getHeight();
             int keypadHeight = screenHeight - (location[1] + rootView.getHeight());
+            int offsetPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
 
-            // Считаем клавиатуру открытой, если её высота > 150px
-            if (keypadHeight > 150) {
-                // Скроллим к последнему сообщению
-                if (messageList != null && !messageList.isEmpty()) {
-                    int lastIndex = messageList.size() - 1;
-                    int extraPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                    int offset = composer.getHeight() + extraPx;
-                    rvMessages.post(() -> layoutManager.scrollToPositionWithOffset(lastIndex, offset));
-                }
-            }
-        });
-
-        // В onCreate() или в GlobalLayoutListener
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            int[] location = new int[2];
-            rootView.getLocationOnScreen(location);
-            int screenHeight = rootView.getRootView().getHeight();
-            int keypadHeight = screenHeight - (location[1] + rootView.getHeight());
-
-            int extraPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-            if (keypadHeight > 150) {
-                // клавиатура открыта
-                rvMessages.setPadding(0, 0, 0, extraPx);
-            } else {
-                // клавиатура закрыта
-                rvMessages.setPadding(0, 0, 0, composer.getHeight() + extraPx);
+            if (keypadHeight > 150) { // клавиатура открыта
+                rvMessages.setPadding(rvMessages.getPaddingLeft(),
+                        rvMessages.getPaddingTop(),
+                        rvMessages.getPaddingRight(),
+                        lastComposerHeight + offsetPx + keypadHeight);
+            } else { // клавиатура закрыта
+                rvMessages.setPadding(rvMessages.getPaddingLeft(),
+                        rvMessages.getPaddingTop(),
+                        rvMessages.getPaddingRight(),
+                        lastComposerHeight + offsetPx);
             }
         });
     }
 
-    private void adjustEditTextHeightAndScrolling() {
+    // Корректная настройка высоты EditText без дерганья RecyclerView
+    private void adjustEditTextHeight() {
         int lineCount = etMessage.getLineCount();
         int lineHeight = etMessage.getLineHeight();
         int maxVisibleHeight = (int)((MAX_VISIBLE_LINES + HALF_LINE) * lineHeight);
@@ -193,66 +177,42 @@ public class ChatActivity extends AppCompatActivity {
             etMessage.setVerticalScrollBarEnabled(true);
             etMessage.setMovementMethod(new ScrollingMovementMethod());
         }
-
-        int offsetPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-        rvMessages.setPadding(rvMessages.getPaddingLeft(),
-                rvMessages.getPaddingTop(),
-                rvMessages.getPaddingRight(),
-                composer.getHeight() + offsetPx);
     }
 
     private void sendMessage() {
         String text = etMessage.getText().toString().trim();
         if (text.isEmpty()) return;
 
-        // Моё сообщение
         Message newMessage = new Message(text, true, System.currentTimeMillis());
         messageList.add(newMessage);
         messageAdapter.notifyItemInserted(messageList.size() - 1);
 
         etMessage.setText("");
-        etMessage.post(this::adjustEditTextHeightAndScrolling);
+        etMessage.post(this::adjustEditTextHeight);
         rvMessages.post(() -> scrollToBottom(false));
 
         // Ответ-бот
         rvMessages.postDelayed(() -> {
             String[] replies = {
-                    "Привет 👋",
-                    "Как дела? \uD83E\uDD28",
-                    "Хорошо, спасибо! \uD83D\uDE1C",
-                    "Интересно 🤔",
-                    "Да, согласен 👍",
-                    "Сейчас занят, отпишусь позже \uD83E\uDD78",
-                    "Ха-ха 😅",
-                    "Ага! \uD83E\uDEE1",
-                    "Расскажи подробнее \uD83E\uDD13",
-                    "Окей! \uD83E\uDD1C",
-                    "Ладно, я реально не могу сейчас \uD83E\uDD72",
-                    "И один в поле воин \uD83D\uDE0E",
-                    "Заболел \uD83E\uDD7A",
-                    "Может быть \uD83E\uDD2A"
+                    "Привет 👋", "Как дела? 🤔", "Хорошо, спасибо! 😄",
+                    "Интересно 🤔", "Да, согласен 👍", "Сейчас занят, отпишусь позже ⏳"
             };
-
             Random random = new Random();
-            String replyText = replies[random.nextInt(replies.length)];
-
-            Message reply = new Message(replyText, false, System.currentTimeMillis());
+            Message reply = new Message(replies[random.nextInt(replies.length)], false, System.currentTimeMillis());
             messageList.add(reply);
             messageAdapter.notifyItemInserted(messageList.size() - 1);
             rvMessages.post(() -> scrollToBottom(false));
-        }, 1000); // задержка 1 сек
+        }, 1000);
     }
 
-
-    private void scrollToBottom() {
-        scrollToBottom(false);
-    }
-
+    // Плавный скролл к последнему сообщению
     private void scrollToBottom(boolean smooth) {
         if (messageList == null || messageList.isEmpty()) return;
         int lastIndex = messageList.size() - 1;
-        int offsetPx = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-        layoutManager.scrollToPositionWithOffset(lastIndex, composer.getHeight() + offsetPx);
+        if (smooth) {
+            rvMessages.smoothScrollToPosition(lastIndex);
+        } else {
+            layoutManager.scrollToPositionWithOffset(lastIndex, 0);
+        }
     }
-
 }
