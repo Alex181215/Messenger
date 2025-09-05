@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="start"
     android:padding="8dp"
-    android:background="@color/dark_gray"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
@@ -21,7 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="4dp"
+            android:paddingStart="8dp">
 
             <TextView
                 android:id="@+id/tv_text"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:paddingTop="4dp"
+                android:paddingTop="2dp"
                 android:text="12:45"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="12sp" />
