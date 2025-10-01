@@ -195,7 +195,7 @@ public class ChatActivity extends AppCompatActivity {
         rvMessages.postDelayed(() -> {
             String[] replies = {
                     "Привет 👋", "Как дела? 🤔", "Хорошо, спасибо! 😄","л",
-                    "Интересно 🤔", "Да, согласен 👍", "Сейчас занят, отпишусь позже ⏳"
+                    "Интересно 🤔", "Да, согласен 👍", "Сейчас занят, отпишусь позже ⏳,намного позже отпишусь хорошо Бро ?"
             };
             Random random = new Random();
             Message reply = new Message(replies[random.nextInt(replies.length)], false, System.currentTimeMillis());

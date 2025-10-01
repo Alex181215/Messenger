@@ -24,4 +24,6 @@
 
     <color name="red_500">#F44336</color>
     <color name="red_700">#D32F2F</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
