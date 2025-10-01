@@ -100,6 +100,7 @@
                 android:id="@+id/til_message"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
+                android:background="@color/transparent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:boxBackgroundMode="filled"
@@ -115,18 +116,23 @@
                     android:id="@+id/et_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top|start"
+                    android:minHeight="48dp"
+                    android:gravity="center|start"
                     android:scrollbars="vertical"
                     android:imeOptions="actionSend"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:hint="@string/message"
                     android:background="@null"
                     android:minLines="1"
                     android:maxLines="6"
+                    android:hint="Сообщение"
                     android:scrollHorizontally="false"
                     android:ellipsize="none"
                     android:paddingStart="12dp"
-                    android:paddingEnd="12dp"/>
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
